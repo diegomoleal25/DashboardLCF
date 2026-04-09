@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leyendo con FUNDAMITO · Dashboard KPIs</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Estilos del dashboard -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="site-navbar">
+    <div class="navbar-brand-area">
+      <div class="navbar-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="navbar-title">Leyendo con FUNDAMITO</div>
+        <div class="navbar-sub">Dashboard de KPIs · 2024–2026</div>
+      </div>
+    </div>
+
+    <!-- Logo institución -->
+    <div class="navbar-logo-area">
+      <img src="img/logob.png" alt="Logo FMTS Foundation" class="navbar-logo" />
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       CONTENEDOR PRINCIPAL
+  ═══════════════════════════════════════ -->
+  <main class="dash-container">
+
+    <!-- TABS -->
+    <ul class="nav nav-pills dash-tabs mb-4">
+      <li class="nav-item">
+        <button class="nav-link active" onclick="switchTab('resumen', this)">Resumen</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="switchTab('historico', this)">Histórico</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" onclick="switchTab('proyeccion', this)">Proyección 2026</button>
+      </li>
+    </ul>
+
+    <!-- ─────────────────────────────────────
+         TAB: RESUMEN
+    ───────────────────────────────────── -->
+    <div id="tab-resumen" class="tab-section">
+
+      <!-- KPI Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-gray">
+            <div class="kpi-label">Total acumulado</div>
+            <div class="kpi-value">544</div>
+            <div class="kpi-sub">alumnos 2024 + 2025</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-blue">
+            <div class="kpi-label">Alumnos 2025</div>
+            <div class="kpi-value">387</div>
+            <div class="kpi-sub">+146% vs 2024</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-teal">
+            <div class="kpi-label">Docentes 2025</div>
+            <div class="kpi-value">20</div>
+            <div class="kpi-sub">+233% vs 2024</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-amber">
+            <div class="kpi-label">Escuelas 2025</div>
+            <div class="kpi-value">5</div>
+            <div class="kpi-sub">+400% vs 2024</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-blue">
+            <div class="kpi-label">Meta alumnos 2026</div>
+            <div class="kpi-value">420</div>
+            <div class="kpi-sub">+8% vs 2025</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="kpi-card kpi-teal">
+            <div class="kpi-label">Meta docentes 2026</div>
+            <div class="kpi-value">25</div>
+            <div class="kpi-sub">+25% vs 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráfica: Crecimiento + tendencia -->
+      <p class="section-label">Crecimiento y tendencia 2024–2026</p>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="dot" style="background:#185FA5"></span>Alumnos</span>
+        <span class="legend-item"><span class="dot" style="background:#1D9E75"></span>Docentes</span>
+        <span class="legend-item"><span class="dot" style="background:#BA7517"></span>Escuelas</span>
+        <span class="legend-item"><span class="dline" style="background:#7F77DD"></span>Tendencia</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chartMain"></canvas></div>
+
+      <!-- Gráfica: Comparativa -->
+      <p class="section-label mt-4">Comparativa por año</p>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="dot" style="background:#185FA5"></span>Alumnos</span>
+        <span class="legend-item"><span class="dot" style="background:#1D9E75"></span>Docentes</span>
+        <span class="legend-item"><span class="dot" style="background:#BA7517"></span>Escuelas</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chartComp"></canvas></div>
+
+    </div>
+
+    <!-- ─────────────────────────────────────
+         TAB: HISTÓRICO
+    ───────────────────────────────────── -->
+    <div id="tab-historico" class="tab-section" style="display:none">
+
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="year-card">
+            <div class="section-label">2024</div>
+            <div class="year-total">164</div>
+            <div class="year-row"><span>Alumnos</span><strong>157</strong></div>
+            <div class="year-row"><span>Docentes</span><strong>6</strong></div>
+            <div class="year-row"><span>Escuelas</span><strong>1</strong></div>
+            <span class="badge-up">Año base</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="year-card highlight">
+            <div class="section-label">2025 ✦</div>
+            <div class="year-total" style="color:#185FA5">412</div>
+            <div class="year-row"><span>Alumnos</span><strong>387</strong></div>
+            <div class="year-row"><span>Docentes</span><strong>20</strong></div>
+            <div class="year-row"><span>Escuelas</span><strong>5</strong></div>
+            <span class="badge-up">+151% vs 2024</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="year-card projected">
+            <div class="section-label">2026 (meta)</div>
+            <div class="year-total" style="color:#7F77DD">450</div>
+            <div class="year-row"><span>Alumnos</span><strong>420</strong></div>
+            <div class="year-row"><span>Docentes</span><strong>25</strong></div>
+            <div class="year-row"><span>Escuelas</span><strong>5</strong></div>
+            <span class="badge-proj">+9% vs 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label">Distribución acumulada 2024–2025</p>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="dot" style="background:#185FA5"></span>Alumnos 95%</span>
+        <span class="legend-item"><span class="dot" style="background:#1D9E75"></span>Docentes 5%</span>
+        <span class="legend-item"><span class="dot" style="background:#BA7517"></span>Escuelas 1%</span>
+      </div>
+      <div class="chart-wrap" style="max-height:240px"><canvas id="chartDonut"></canvas></div>
+
+    </div>
+
+    <!-- ─────────────────────────────────────
+         TAB: PROYECCIÓN 2026
+    ───────────────────────────────────── -->
+    <div id="tab-proyeccion" class="tab-section" style="display:none">
+
+      <div class="sim-card mb-4">
+        <div class="sim-title">Simulador de meta 2026</div>
+        <div class="sim-sub">Ajusta la distribución proyectada de participantes</div>
+
+        <!-- Slider: Alumnos -->
+        <div class="slider-row">
+          <span class="slider-label">
+            <span class="dot round" style="background:#185FA5"></span>Alumnos
+          </span>
+          <input type="range" class="form-range" id="s-alu" min="0" max="600" value="420" step="1" oninput="updateProj()">
+          <span class="slider-val" id="v-alu">420</span>
+        </div>
+
+        <!-- Slider: Docentes -->
+        <div class="slider-row">
+          <span class="slider-label">
+            <span class="dot round" style="background:#1D9E75"></span>Docentes
+          </span>
+          <input type="range" class="form-range" id="s-doc" min="0" max="60" value="25" step="1" oninput="updateProj()">
+          <span class="slider-val" id="v-doc">25</span>
+        </div>
+
+        <!-- Slider: Escuelas -->
+        <div class="slider-row">
+          <span class="slider-label">
+            <span class="dot round" style="background:#BA7517"></span>Escuelas
+          </span>
+          <input type="range" class="form-range" id="s-esc" min="1" max="20" value="5" step="1" oninput="updateProj()">
+          <span class="slider-val" id="v-esc">5</span>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress-section">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="progress-label">Alumnos proyectados vs meta (420)</span>
+            <span class="progress-label" id="p-pct-label">100% · 420 / 420</span>
+          </div>
+          <div class="bar-bg">
+            <div class="bar-fill" id="target-bar" style="width:100%"></div>
+          </div>
+          <div class="d-flex justify-content-between mt-1">
+            <span class="progress-label">0</span>
+            <span class="progress-label">Meta: 420</span>
+          </div>
+        </div>
+
+        <!-- Métricas calculadas -->
+        <div class="row g-2 mt-1">
+          <div class="col-6">
+            <div class="proj-num">
+              <div class="proj-lbl">Total participantes</div>
+              <div class="proj-val" id="p-total">450</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="proj-num">
+              <div class="proj-lbl">Alumnos vs meta</div>
+              <div class="proj-val" id="p-gap" style="color:#1D9E75">±0</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="proj-num">
+              <div class="proj-lbl">Crecimiento vs 2025</div>
+              <div class="proj-val" id="p-crec">+9%</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="proj-num">
+              <div class="proj-lbl">Ratio alumnos / docente</div>
+              <div class="proj-val" id="p-ratio">16.8</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label">Línea de crecimiento proyectada 2024–2026</p>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="dline" style="background:#185FA5"></span>Histórico real</span>
+        <span class="legend-item"><span class="dline" style="background:#7F77DD"></span>Proyección 2026</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chartProj"></canvas></div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/dashboard.js"></script>
+<!-- Botón flotante de tema -->
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+    Modo oscuro
+  </button>
+
+</body>
+</body>
+</html>

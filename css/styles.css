@@ -1,0 +1,452 @@
+/* ═══════════════════════════════════════════════════
+   FUNDAMITO DASHBOARD · styles.css
+   Depende de: Bootstrap 5.3, Plus Jakarta Sans (Google Fonts)
+   Archivo generado para edición en VS Code
+═══════════════════════════════════════════════════ */
+
+/* ─── Variables globales ─────────────────────────── */
+:root {
+  --color-blue:       #185FA5;
+  --color-teal:       #1D9E75;
+  --color-amber:      #BA7517;
+  --color-purple:     #7F77DD;
+  --color-border:     #e1e1e1;
+  --color-text:       #242424;
+  --color-muted:      #6b6b6b;
+  --color-surface:    #f5f5f5;
+  --color-white:      #ffffff;
+  --radius-md:        8px;
+  --radius-lg:        12px;
+  --font-main:        'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+}
+
+/* ─── Reset base ─────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #f0f2f5;
+  color: var(--color-text);
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* ─── Navbar ──────────────────────────────────────── */
+.site-navbar {
+  background-color: var(--color-blue);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-brand-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navbar-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navbar-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.navbar-sub {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* Logo en navbar (reemplaza img/logo.png con tu archivo) */
+.navbar-logo-area {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  /* Fondo blanco redondeado para logos con fondo transparente */
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  padding: 4px 8px;
+}
+
+/* ─── Contenedor principal ────────────────────────── */
+.dash-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ─── Tabs ────────────────────────────────────────── */
+.dash-tabs {
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0;
+  margin-bottom: 1.5rem !important;
+}
+
+.dash-tabs .nav-link {
+  font-size: 13px;
+  color: var(--color-muted);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: 8px 18px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  transition: all 0.15s;
+}
+
+.dash-tabs .nav-link:hover:not(.active) {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.dash-tabs .nav-link.active {
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
+  font-weight: 500;
+  background: none;
+}
+
+/* ─── KPI Cards ───────────────────────────────────── */
+.kpi-card {
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  height: 100%;
+  transition: transform 0.15s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.kpi-sub {
+  font-size: 11px;
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
+/* Variantes de color para KPI */
+.kpi-blue  { background: #B5D4F4; color: #042C53; }
+.kpi-teal  { background: #9FE1CB; color: #04342C; }
+.kpi-amber { background: #FAC775; color: #412402; }
+.kpi-gray  { background: #D3D1C7; color: #2C2C2A; }
+
+/* ─── Section label ───────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+/* ─── Leyenda de gráficas ─────────────────────────── */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.dot.round {
+  border-radius: 50%;
+}
+
+.dline {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ─── Área de gráfica ─────────────────────────────── */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Year cards (tab Histórico) ──────────────────── */
+.year-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  height: 100%;
+  transition: box-shadow 0.15s;
+}
+
+.year-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.year-card.highlight {
+  border-color: var(--color-blue);
+  border-width: 2px;
+}
+
+.year-card.projected {
+  border-style: dashed;
+}
+
+.year-total {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 10px;
+  margin-top: 6px;
+}
+
+.year-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-muted);
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.year-row:last-of-type {
+  border-bottom: none;
+}
+
+.year-row strong {
+  color: var(--color-text);
+}
+
+/* ─── Badges ──────────────────────────────────────── */
+.badge-up {
+  background: #EAF3DE;
+  color: #27500A;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 400;
+}
+
+.badge-proj {
+  background: #E6F1FB;
+  color: #0C447C;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 400;
+}
+
+/* ─── Simulador (tab Proyección) ──────────────────── */
+.sim-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.sim-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.sim-sub {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 20px;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.slider-label {
+  min-width: 96px;
+  font-size: 12px;
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slider-val {
+  min-width: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+}
+
+/* ─── Barra de progreso ───────────────────────────── */
+.progress-section {
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.progress-label {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.bar-bg {
+  background: #e1e1e1;
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 10px;
+  border-radius: 6px;
+  background: var(--color-blue);
+  transition: width 0.4s ease;
+}
+
+/* ─── Métricas calculadas ─────────────────────────── */
+.proj-num {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.proj-lbl {
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.proj-val {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ─── Dark mode ───────────────────────────────────── */
+
+ body.dark                     { background-color: #111318; color: #e8e6e1; }
+ body.dark .kpi-blue                { background: #0C447C; color: #B5D4F4; }
+ body.dark .kpi-teal                { background: #085041; color: #9FE1CB; }
+ body.dark .kpi-amber               { background: #633806; color: #FAC775; }
+ body.dark .kpi-gray                { background: #444441; color: #D3D1C7; }
+ body.dark .badge-up                { background: #27500A; color: #C0DD97; }
+ body.dark .badge-proj              { background: #0C447C; color: #B5D4F4; }
+ body.dark .year-card               { background: #1c1f26; border-color: #333; }
+ body.dark .year-card.highlight     { border-color: #378ADD; }
+ body.dark .year-row                { color: #aaa; border-color: #2a2a2a; }
+ body.dark .year-row strong         { color: #e8e6e1; }
+ body.dark .year-total              { color: #e8e6e1; }
+ body.dark .sim-card                { background: #1c1f26; border-color: #333; }
+ body.dark .proj-num                { background: #252830; }
+ body.dark .proj-lbl                { color: #aaa; }
+ body.dark .proj-val                { color: #e8e6e1; }
+ body.dark .bar-bg                  { background: #444; }
+ body.dark .chart-wrap              { background: #1c1f26; border-color: #333; }
+ body.dark .section-label           { color: #aaa; }
+ body.dark .legend-item             { color: #aaa; }
+ body.dark .dash-tabs .nav-link     { color: #aaa; }
+ body.dark .dash-tabs .nav-link.active { color: #85B7EB; border-bottom-color: #85B7EB; }
+
+
+/* ─── Responsive ──────────────────────────────────── */
+@media (max-width: 576px) {
+  .site-navbar        { padding: 12px 16px; }
+  .navbar-title       { font-size: 13px; }
+  .dash-container     { margin: 1rem auto; }
+  .kpi-value          { font-size: 26px; }
+  .chart-wrap         { height: 220px; }
+}
+/* ─── Botón de tema ──────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #185FA5;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-family: var(--font-main);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background 0.15s, transform 0.15s;
+  z-index: 999;
+}
+
+.theme-toggle:hover {
+  background: #0C447C;
+  transform: translateY(-2px);
+}
+
+body.dark .theme-toggle {
+  background: #378ADD;
+}
+
+body.dark .theme-toggle:hover {
+  background: #185FA5;
+}

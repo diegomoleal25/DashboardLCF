@@ -1,0 +1,16 @@
+CARPETA img/
+═══════════════════════════════════════════════════════
+
+Coloca aquí el logo de tu institución con el nombre:
+
+  logo.png
+
+Recomendaciones:
+  - Formato:    PNG con fondo transparente (ideal) o blanco
+  - Tamaño:     Mínimo 200×80 px, máximo 600×200 px
+  - Peso:       Menor a 100 KB para carga rápida
+
+El archivo ya está referenciado en index.html:
+  <img src="img/logo.png" alt="Logo FMTS Foundation" class="navbar-logo" />
+
+Si usas otro nombre de archivo, actualiza el src en index.html.
