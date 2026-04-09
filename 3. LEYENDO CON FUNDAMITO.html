@@ -1,0 +1,362 @@
+
+<style>
+  :root {
+  --color-text-primary: #242424;
+  --color-text-secondary: #6b6b6b;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-border-tertiary: #e1e1e1;
+
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+
+  --font-sans: "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.dash { padding: 1.5rem 1rem; }
+.header { margin-bottom: 1.5rem; }
+.header h1 { font-size: 40px; font-weight: 500; color: var(--color-text-primary); }
+.header p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.tab { font-size: 13px; padding: 6px 14px; cursor: pointer; border: none; background: none; color: var(--color-text-secondary); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
+.tab.active { color: var(--color-text-primary); border-bottom-color: var(--color-text-primary); font-weight: 500; }
+.tab:hover:not(.active) { color: var(--color-text-primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.kpi-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+.kpi-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .04em; }
+.kpi-value { font-size: 28px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 4px; }
+.kpi-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+
+.section-title { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.chart-wrap { position: relative; width: 100%; margin-bottom: 1.5rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; font-size: 12px; color: var(--color-text-secondary); }
+.legend span { display: flex; align-items: center; gap: 5px; }
+.dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.dot-line { width: 18px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+
+.year-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.year-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 16px; }
+.year-card.highlight { border-color: #185FA5; border-width: 1px; }
+.year-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+.year-total { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+.year-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--color-text-secondary); padding: 3px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.year-row:last-child { border-bottom: none; }
+.year-row strong { color: var(--color-text-primary); }
+.growth-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; margin-top: 8px; }
+.g-up { background: #EAF3DE; color: #27500A; }
+.g-proj { background: #E6F1FB; color: #0C447C; }
+@media (prefers-color-scheme: dark) {
+  .g-up { background: #27500A; color: #C0DD97; }
+  .g-proj { background: #0C447C; color: #B5D4F4; }
+}
+
+.proj-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.slider-wrap { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px; }
+.slider-wrap input { flex: 1; }
+.slider-val { min-width: 28px; font-weight: 500; color: var(--color-text-primary); text-align: right; }
+.proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.proj-num { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
+.proj-num .lbl { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 3px; }
+.proj-num .val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.target-bar-wrap { margin-top: 14px; }
+.target-bar-bg { background: var(--color-border-tertiary); border-radius: 6px; height: 10px; width: 100%; overflow: hidden; }
+.target-bar-fill { height: 10px; border-radius: 6px; background: #185FA5; transition: width .4s; }
+.target-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-secondary); margin-top: 5px; }
+</style>
+
+<div class="dash">
+  <div class="header">
+    <h1>Leyendo con FUNDAMITO</h1>
+    <p>Dashboard de KPIs · Indicadores de alumnos, docentes y escuelas · 2024–2026</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('resumen',event)">Resumen</button>
+    <button class="tab" onclick="switchTab('historico',event)">Histórico</button>
+    <button class="tab" onclick="switchTab('proyeccion',event)">Proyección 2026</button>
+  </div>
+
+  <!-- RESUMEN -->
+  <div id="tab-resumen" class="tab-content active">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total alumnos acum.</div>
+        <div class="kpi-value">544</div>
+        <div class="kpi-sub">2024 + 2025</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="kpi-dot" style="background:#185FA5"></span>Alumnos 2025</div>
+        <div class="kpi-value">387</div>
+        <div class="kpi-sub">+146% vs 2024</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="kpi-dot" style="background:#1D9E75"></span>Docentes 2025</div>
+        <div class="kpi-value">20</div>
+        <div class="kpi-sub">+233% vs 2024</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="kpi-dot" style="background:#BA7517"></span>Escuelas 2025</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-sub">+400% vs 2024</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Meta alumnos 2026</div>
+        <div class="kpi-value">420</div>
+        <div class="kpi-sub">+8% vs 2025</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Meta docentes 2026</div>
+        <div class="kpi-value">25</div>
+        <div class="kpi-sub">+25% vs 2025</div>
+      </div>
+    </div>
+
+    <p class="section-title">Crecimiento de participantes y línea de tendencia 2024–2026</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#185FA5"></span>Alumnos</span>
+      <span><span class="dot" style="background:#1D9E75"></span>Docentes</span>
+      <span><span class="dot" style="background:#BA7517"></span>Escuelas</span>
+      <span><span class="dot-line" style="background:#7F77DD"></span>Tendencia total</span>
+      <span><span class="dot-line" style="background:#7F77DD; opacity:.4; border:1px dashed #7F77DD"></span>Proyección 2026</span>
+    </div>
+    <div class="chart-wrap" style="height:280px"><canvas id="chartMain"></canvas></div>
+
+    <p class="section-title">Comparativa de indicadores por año</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#185FA5"></span>Alumnos</span>
+      <span><span class="dot" style="background:#1D9E75"></span>Docentes</span>
+      <span><span class="dot" style="background:#BA7517"></span>Escuelas</span>
+    </div>
+    <div class="chart-wrap" style="height:260px"><canvas id="chartComparativa"></canvas></div>
+  </div>
+
+  <!-- HISTORICO -->
+  <div id="tab-historico" class="tab-content">
+    <div class="year-cards">
+      <div class="year-card">
+        <div class="year-label">2024</div>
+        <div class="year-total">164</div>
+        <div class="year-row"><span>Alumnos</span><strong>157</strong></div>
+        <div class="year-row"><span>Docentes</span><strong>6</strong></div>
+        <div class="year-row"><span>Escuelas</span><strong>1</strong></div>
+        <span class="growth-badge g-up">Año base</span>
+      </div>
+      <div class="year-card highlight">
+        <div class="year-label">2025 ✦</div>
+        <div class="year-total">412</div>
+        <div class="year-row"><span>Alumnos</span><strong>387</strong></div>
+        <div class="year-row"><span>Docentes</span><strong>20</strong></div>
+        <div class="year-row"><span>Escuelas</span><strong>5</strong></div>
+        <span class="growth-badge g-up">+151% vs 2024</span>
+      </div>
+      <div class="year-card" style="border-style:dashed">
+        <div class="year-label">2026 (meta)</div>
+        <div class="year-total" style="color:#185FA5">450</div>
+        <div class="year-row"><span>Alumnos</span><strong>420</strong></div>
+        <div class="year-row"><span>Docentes</span><strong>25</strong></div>
+        <div class="year-row"><span>Escuelas</span><strong>5</strong></div>
+        <span class="growth-badge g-proj">+9% vs 2025</span>
+      </div>
+    </div>
+
+    <p class="section-title">Distribución acumulada 2024–2025</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#185FA5"></span>Alumnos 95%</span>
+      <span><span class="dot" style="background:#1D9E75"></span>Docentes 5%</span>
+      <span><span class="dot" style="background:#BA7517"></span>Escuelas 1%</span>
+    </div>
+    <div class="chart-wrap" style="height:220px"><canvas id="chartDonut"></canvas></div>
+  </div>
+
+  <!-- PROYECCION -->
+  <div id="tab-proyeccion" class="tab-content">
+    <div class="proj-card">
+      <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Simulador de meta 2026</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">Ajusta la distribución proyectada de alumnos, docentes y escuelas</div>
+
+      <div class="slider-wrap">
+        <span style="min-width:90px;font-size:12px"><span class="kpi-dot" style="background:#185FA5"></span>Alumnos</span>
+        <input type="range" id="s-alu" min="0" max="600" value="420" step="1" oninput="updateProj()">
+        <span class="slider-val" id="v-alu">420</span>
+      </div>
+      <div class="slider-wrap">
+        <span style="min-width:90px;font-size:12px"><span class="kpi-dot" style="background:#1D9E75"></span>Docentes</span>
+        <input type="range" id="s-doc" min="0" max="60" value="25" step="1" oninput="updateProj()">
+        <span class="slider-val" id="v-doc">25</span>
+      </div>
+      <div class="slider-wrap">
+        <span style="min-width:90px;font-size:12px"><span class="kpi-dot" style="background:#BA7517"></span>Escuelas</span>
+        <input type="range" id="s-esc" min="1" max="20" value="5" step="1" oninput="updateProj()">
+        <span class="slider-val" id="v-esc">5</span>
+      </div>
+
+      <div class="target-bar-wrap">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">
+          <span>Alumnos proyectados vs meta (420)</span><span id="p-pct-label">100% · 420 / 420</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill" id="target-bar" style="width:100%"></div></div>
+        <div class="target-bar-label"><span>0</span><span>Meta: 420 alumnos</span></div>
+      </div>
+
+      <div class="proj-grid">
+        <div class="proj-num"><div class="lbl">Total participantes</div><div class="val" id="p-total">450</div></div>
+        <div class="proj-num"><div class="lbl">Alumnos vs meta</div><div class="val" id="p-gap" style="color:#1D9E75">±0</div></div>
+        <div class="proj-num"><div class="lbl">Crecimiento vs 2025</div><div class="val" id="p-crec">+9%</div></div>
+        <div class="proj-num"><div class="lbl">Ratio alumnos / docente</div><div class="val" id="p-ratio">16.8</div></div>
+      </div>
+    </div>
+
+    <p class="section-title">Línea de crecimiento proyectada 2024–2026</p>
+    <div class="legend">
+      <span><span class="dot-line" style="background:#185FA5"></span>Histórico real</span>
+      <span><span class="dot-line" style="background:#7F77DD;border:1px dashed #7F77DD"></span>Proyección 2026</span>
+    </div>
+    <div class="chart-wrap" style="height:260px"><canvas id="chartProj"></canvas></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const grid = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+const lbl = isDark ? '#b0aea6' : '#73726c';
+Chart.defaults.font.family = 'var(--font-sans)';
+Chart.defaults.font.size = 12;
+
+const years = ['2024','2025','2026'];
+
+new Chart(document.getElementById('chartMain'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: 'Alumnos',  data: [157, 387, null], backgroundColor: '#185FA5', stack: 'real', order: 2 },
+      { label: 'Docentes', data: [6,   20,  null], backgroundColor: '#1D9E75', stack: 'real', order: 2 },
+      { label: 'Escuelas', data: [1,   5,   null], backgroundColor: '#BA7517', stack: 'real', order: 2 },
+      {
+        label: 'Tendencia total', type: 'line',
+        data: [164, 412, 450],
+        borderColor: '#7F77DD', backgroundColor: 'transparent',
+        borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#7F77DD',
+        tension: 0.35, order: 1, stack: undefined,
+        segment: {
+          borderDash: ctx => ctx.p1DataIndex >= 1 ? [6,4] : undefined,
+          borderColor: ctx => ctx.p1DataIndex >= 1 ? '#AFA9EC' : '#7F77DD',
+        }
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+    scales: {
+      x: { stacked: true, ticks: { color: lbl }, grid: { display: false } },
+      y: { stacked: true, ticks: { color: lbl }, grid: { color: grid } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartComparativa'), {
+  type: 'bar',
+  data: {
+    labels: ['2024','2025','2026 (proy.)'],
+    datasets: [
+      { label: 'Alumnos',  data: [157, 387, 420], backgroundColor: '#185FA5' },
+      { label: 'Docentes', data: [6,   20,  25],  backgroundColor: '#1D9E75' },
+      { label: 'Escuelas', data: [1,   5,   5],   backgroundColor: '#BA7517' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+    scales: {
+      x: { ticks: { color: lbl }, grid: { display: false } },
+      y: { ticks: { color: lbl }, grid: { color: grid }, beginAtZero: true }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Alumnos (544)', 'Docentes (26)', 'Escuelas (6)'],
+    datasets: [{ data: [544, 26, 6], backgroundColor: ['#185FA5','#1D9E75','#BA7517'], borderWidth: 0, hoverOffset: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '60%',
+    plugins: { legend: { display: false } }
+  }
+});
+
+let projChart = new Chart(document.getElementById('chartProj'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Total histórico',
+        data: [164, 412, null],
+        borderColor: '#185FA5', backgroundColor: 'rgba(24,95,165,0.08)',
+        borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#185FA5',
+        tension: 0.3, fill: true
+      },
+      {
+        label: 'Proyección 2026',
+        data: [null, 412, 450],
+        borderColor: '#7F77DD', backgroundColor: 'rgba(127,119,221,0.06)',
+        borderWidth: 2.5, borderDash: [7,4],
+        pointRadius: [0, 0, 6], pointBackgroundColor: '#7F77DD',
+        tension: 0.3, fill: true
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw ?? '—'}` } }
+    },
+    scales: {
+      x: { ticks: { color: lbl }, grid: { display: false } },
+      y: { ticks: { color: lbl }, grid: { color: grid }, beginAtZero: true }
+    }
+  }
+});
+
+function updateProj() {
+  const alu = +document.getElementById('s-alu').value;
+  const doc = +document.getElementById('s-doc').value;
+  const esc = +document.getElementById('s-esc').value;
+  document.getElementById('v-alu').textContent = alu;
+  document.getElementById('v-doc').textContent = doc;
+  document.getElementById('v-esc').textContent = esc;
+  const total = alu + doc + esc;
+  const gap = alu - 420;
+  const pct = Math.min(Math.round((alu / 420) * 100), 200);
+  const crec = Math.round(((alu - 387) / 387) * 100);
+  const ratio = doc > 0 ? (alu / doc).toFixed(1) : '—';
+  document.getElementById('p-total').textContent = total;
+  document.getElementById('p-gap').textContent = gap === 0 ? '±0' : (gap > 0 ? '+' + gap : gap);
+  document.getElementById('p-gap').style.color = gap >= 0 ? '#1D9E75' : '#D85A30';
+  document.getElementById('p-pct-label').textContent = Math.min(pct,100) + '% · ' + alu + ' / 420';
+  document.getElementById('target-bar').style.width = Math.min(pct,100) + '%';
+  document.getElementById('target-bar').style.background = gap < 0 ? '#D85A30' : '#185FA5';
+  document.getElementById('p-crec').textContent = (crec >= 0 ? '+' : '') + crec + '%';
+  document.getElementById('p-ratio').textContent = ratio;
+  projChart.data.datasets[1].data = [null, 412, total];
+  projChart.update();
+}
+
+function switchTab(id, e) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  e.target.classList.add('active');
+}
+</script>
